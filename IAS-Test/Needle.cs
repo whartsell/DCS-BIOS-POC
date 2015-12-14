@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gauge_POC
+namespace net.willshouse.dcs.iastest
 {
-    class Needle: Sprite
+    public class Needle: Sprite
 
     {
         private float rads;
