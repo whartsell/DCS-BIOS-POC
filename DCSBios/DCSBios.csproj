@@ -7,7 +7,7 @@
     <ProjectGuid>{23B5CFB1-3309-40E4-951A-BA74A30FED95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DCSBios</RootNamespace>
+    <RootNamespace>net.willshouse.dcs.dcsbios</RootNamespace>
     <AssemblyName>DCSBios</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExportListener.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="MemoryMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolParser.cs" />
