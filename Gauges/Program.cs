@@ -1,5 +1,5 @@
 ﻿using System;
-
+using net.willshouse.dcs.gauges;
 namespace Gauges
 {
 #if WINDOWS || LINUX

@@ -5,7 +5,7 @@ using net.willshouse.dcs.dcsbios;
 using net.willshouse.dcs.iastest;
 
 
-namespace Gauges
+namespace net.willshouse.dcs.gauges
 {
     /// <summary>
     /// This is the main type for your game.

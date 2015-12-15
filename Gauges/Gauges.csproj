@@ -60,7 +60,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -81,20 +80,16 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DCSBios\DCSBios.csproj">
-      <Project>{23b5cfb1-3309-40e4-951a-ba74a30fed95}</Project>
-      <Name>DCSBios</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IAS-Test\IAS-Test.csproj">
-      <Project>{7f7f46ef-99fd-4fb9-8da0-071f39d5bfe3}</Project>
-      <Name>IAS-Test</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Content\resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GaugesLib\GaugesLib.csproj">
+      <Project>{338c53db-0b17-4dc6-a29f-89a24858dfa4}</Project>
+      <Name>GaugesLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
