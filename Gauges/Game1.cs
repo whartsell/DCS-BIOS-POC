@@ -19,6 +19,10 @@ namespace Gauges
         private int port = 5010;
         private Needle needle;
         private GaugeFace face;
+        private bool test;
+        private int testValue;
+        private KeyboardState prevState;
+        private Color background;
 
         public Game1()
         {
@@ -37,6 +41,10 @@ namespace Gauges
             // TODO: Add your initialization logic here
             manager = new Manager(address, port);
             manager.Start();
+            test = false;
+            testValue = 0;
+            background = Color.CornflowerBlue;
+            
             base.Initialize();
         }
 
@@ -69,11 +77,47 @@ namespace Gauges
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            int value;
+            KeyboardState state = Keyboard.GetState();
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
                 Shutdown();
 
+           if ((state.IsKeyDown(Keys.F1)) && (prevState.IsKeyUp(Keys.F1)))
+            {
+                if (!test)
+                {
+                    manager.Stop();
+                    test = true;
+                    background = Color.Red;
+                    
+                }
+                else
+                {
+                    manager.Start();
+                    test = false;
+                    background = Color.CornflowerBlue;
+                }
+
+                
+            }
+
+            prevState = state;
+
             // TODO: Add your update logic here
-            needle.Update(manager.getDataAtAddress(0x107a));
+            if (test)
+            {
+                if (state.IsKeyDown(Keys.Right))
+                    testValue +=100;
+                else if (state.IsKeyDown(Keys.Left))
+                    testValue -=100;
+                value = testValue;
+            }
+            else
+            {
+                value = manager.getDataAtAddress(0x107a);
+            }
+            needle.Update(value);
             base.Update(gameTime);
         }
 
@@ -83,7 +127,7 @@ namespace Gauges
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(background);
             spriteBatch.Begin();
             face.Draw(spriteBatch);
             needle.Draw(spriteBatch);
