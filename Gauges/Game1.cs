@@ -48,8 +48,8 @@ namespace Gauges
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            face = new GaugeFace(Content.Load<Texture2D>("faceplate"), new Vector2(200, 150));
-            needle = new Needle(Content.Load<Texture2D>("needle"), new Vector2(350, 305));
+            face = new GaugeFace(Content.Load<Texture2D>("resources/faceplate"), new Vector2(200, 150));
+            needle = new Needle(Content.Load<Texture2D>("resources/needle"), new Vector2(350, 305));
             // TODO: use this.Content to load your game content here
         }
 
