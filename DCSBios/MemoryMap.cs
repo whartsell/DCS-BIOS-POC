@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace net.willshouse.dcs.dcsbios
 {
     public class MemoryMap
     {
-        private Dictionary<ushort, ushort> activeMap, receiveMap, mergeMap;
+        private Dictionary<ushort, ushort> activeMap, receiveMap;
         private Object mapLock;
         public MemoryMap()
         {
@@ -69,9 +67,9 @@ namespace net.willshouse.dcs.dcsbios
             lock (mapLock)
             {
                 
-                Dictionary<ushort, ushort> results =
+                Dictionary<ushort, ushort> mergeMap =
                     receiveMap.Concat(activeMap.Where(kvp => !receiveMap.ContainsKey(kvp.Key))).OrderBy(c => c.Value).ToDictionary(c => c.Key, c => c.Value);
-                activeMap = new Dictionary<ushort, ushort>(results);
+                activeMap = new Dictionary<ushort, ushort>(mergeMap);
                 
             }   
         }

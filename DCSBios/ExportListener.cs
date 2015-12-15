@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace net.willshouse.dcs.dcsbios
 {
@@ -19,7 +15,6 @@ namespace net.willshouse.dcs.dcsbios
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         private UdpClient listener;
-        private IPEndPoint endPoint;
         private int port;
         private IPAddress multicastGroup;
         private IPEndPoint groupEP;
@@ -88,6 +83,7 @@ namespace net.willshouse.dcs.dcsbios
                 }
                 catch (SocketException e)
                 {
+                    
                     isListening = false;
                     
                 }
