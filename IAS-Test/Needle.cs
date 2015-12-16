@@ -22,8 +22,9 @@ namespace net.willshouse.dcs.iastest
         public override void Draw(SpriteBatch spriteBatch)
         {
             Rectangle sourceRectangle = new Rectangle(0, 0, textureImage.Width, textureImage.Height);
-            Vector2 origin = new Vector2(textureImage.Width / 2, textureImage.Height - 30);
-            spriteBatch.Draw(textureImage, position, sourceRectangle, Color.White, rads, origin, 1.0f, SpriteEffects.None, 1);
+            Vector2 origin = new Vector2(textureImage.Width/2, textureImage.Height-35);
+            spriteBatch.Draw(textureImage, position, sourceRectangle, Color.White, rads, origin, 0.9f, SpriteEffects.None, 1);
+            //spriteBatch.Draw(textureImage, position, Color.White);
             //spriteBatch.DrawString(font, "value: " + value, new Vector2(50, 25), Color.White);
             //spriteBatch.DrawString(font, "radians: " + rads.ToString("N6"), new Vector2(50, 50), Color.White);
         }
