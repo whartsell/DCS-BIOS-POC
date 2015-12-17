@@ -111,8 +111,8 @@ namespace net.willshouse.dcs.dcsbios
         public void MessageReceivedHandler(object sender, MessageReceivedEventArgs e)
         {
             //Console.WriteLine("MessageReceivedHandler");
-            foreach (byte b in e.Message) {
-                this.processChar(b);
+            for (int i = 0; i < e.ByteCount; i++){
+                this.processChar(e.Message[i]);
             }
         }
 

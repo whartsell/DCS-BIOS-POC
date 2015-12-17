@@ -15,8 +15,8 @@ namespace net.willshouse.dcs.gauges
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Manager manager;
-        private string address = "239.255.50.10";
-        private int port = 5010;
+        private string address = "192.168.1.2";
+        private int port = 7777;
         private Needle needle;
         private GaugeFace face;
         private bool test;

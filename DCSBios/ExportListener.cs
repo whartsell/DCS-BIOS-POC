@@ -2,24 +2,29 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace net.willshouse.dcs.dcsbios
 {
     public class MessageReceivedEventArgs : EventArgs
     {
         public byte[] Message { get; set; }
+        public int ByteCount { get; set; }
+        public EndPoint Sender { get; set; }
     }
 
     public class ExportListener
     {
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
-        private UdpClient listener;
+        
+        private Socket listener;
         private int port;
-        private IPAddress multicastGroup;
+        private IPAddress address;
         private IPEndPoint groupEP;
-        private Thread listenThread;
         private bool isListening;
+        private CancellationTokenSource tokenSource;
+
 
         
        
@@ -27,12 +32,13 @@ namespace net.willshouse.dcs.dcsbios
 
 
 
-        public ExportListener(int aPort,String aMulticastAddress)
+        public ExportListener(int aPort,String aAddress)
         {
             isListening = false;
             port = aPort;
-            multicastGroup = IPAddress.Parse(aMulticastAddress);
+            address = IPAddress.Parse(aAddress);
             groupEP = new IPEndPoint(IPAddress.Any, port);
+            tokenSource = new CancellationTokenSource();
            
         }
 
@@ -40,44 +46,44 @@ namespace net.willshouse.dcs.dcsbios
         {
             if (!isListening)
             {
-                listener = new UdpClient(port);
-                listener.JoinMulticastGroup(multicastGroup);
-                listenThread = new Thread(listen);
-                listenThread.Start();
-                isListening = true;
+                
                
+                listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                listener.Bind(new IPEndPoint(address, port));
+                Task.Run(() =>listen(tokenSource.Token), tokenSource.Token);
             }
 
         }
 
         public void Stop()
         {
-            if (isListening)
-            {
-                isListening = false;
-                listener.DropMulticastGroup(multicastGroup);
-                listener.Close();
-            }
+            tokenSource.Cancel();
+            listener.Dispose();
 
         }
 
         protected virtual void OnMessageReceived(MessageReceivedEventArgs e)
         {
-            //Console.WriteLine("OnMessageReceived");
+
             EventHandler<MessageReceivedEventArgs> handler = MessageReceived;
             if (handler != null)
                 handler(this, e);
         }
 
-        private void listen()
+        private void listen(CancellationToken token)
         {
-            while (isListening)
+            while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    byte[] message = listener.Receive(ref groupEP);
+                    
+                    EndPoint senderRemote = (EndPoint)groupEP;
+                    byte[] message = new byte[256];
+                    int byteCount = listener.ReceiveFrom(message, ref senderRemote);
                     MessageReceivedEventArgs args = new MessageReceivedEventArgs();
                     args.Message = message;
+                    args.ByteCount = byteCount;
+                    args.Sender = senderRemote;
                     OnMessageReceived(args);
                     
                 }
