@@ -2,7 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using net.willshouse.dcs.dcsbios;
-using System;
+
+
 
 namespace net.willshouse.dcs.gaugelib
 {
@@ -14,24 +15,19 @@ namespace net.willshouse.dcs.gaugelib
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Manager manager;
-        private string address = "239.255.50.10";
-        private int port = 5010;
+        private string address = "192.168.1.2";
+        private int port = 7777;
         private Needle needle;
         private GaugeFace face;
         private bool test;
         private int testValue;
         private KeyboardState prevState;
         private Color background;
-        private Color defaultBackground;
-        private Listener listener;
-        public event Action StartEvent;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            
-           
         }
 
         /// <summary>
@@ -43,16 +39,11 @@ namespace net.willshouse.dcs.gaugelib
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            manager = new Manager();
+            manager = new Manager(address, port);
             manager.Start();
             test = false;
             testValue = 0;
             background = Color.CornflowerBlue;
-            defaultBackground = Color.CornflowerBlue;
-            listener = new Listener(manager);
-            this.StartEvent += listener.Start;
-            Action startEvent = StartEvent;
-            if (startEvent != null) startEvent();
             
             base.Initialize();
         }
@@ -98,24 +89,22 @@ namespace net.willshouse.dcs.gaugelib
             {
                 if (!test)
                 {
-                    //manager.Stop();
-                    listener.Stop();
+                    manager.Stop();
                     test = true;
                     background = Color.Red;
-                    
                     
                 }
                 else
                 {
-                    //manager.Start();
-                    listener.Start();
+                    manager.Start();
                     test = false;
-                    background = defaultBackground; ;
+                    background = Color.CornflowerBlue;
                 }
 
                 
             }
-             prevState = state;
+
+            prevState = state;
 
             // TODO: Add your update logic here
             if (test)
@@ -129,18 +118,8 @@ namespace net.willshouse.dcs.gaugelib
             else
             {
                 value = manager.getDataAtAddress(0x107a);
-                //value = 32767;
             }
             needle.Update(value);
-           
-      
-            if (listener.Pulse)
-            {
-                background = Color.Green;
-            } else
-            {
-                background = Color.CornflowerBlue;
-            }
             base.Update(gameTime);
         }
 
@@ -162,11 +141,8 @@ namespace net.willshouse.dcs.gaugelib
 
         protected void Shutdown()
         {
-            //manager.Stop();
-            listener.Stop();
+            manager.Stop();
             Exit();
         }
-
-        
     }
 }

@@ -24,12 +24,10 @@ namespace net.willshouse.dcs.dcsbios
         private IPEndPoint groupEP;
         private bool isListening;
         private CancellationTokenSource tokenSource;
-        private SocketAsyncEventArgs socketAsyncEventArgs;
-        private bool waitForReceive;
 
 
-
-
+        
+       
 
 
 
@@ -51,7 +49,7 @@ namespace net.willshouse.dcs.dcsbios
                 
                
                 listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                listener.Bind(new IPEndPoint(IPAddress.Any, port));
+                listener.Bind(new IPEndPoint(address, port));
                 Task.Run(() =>listen(tokenSource.Token), tokenSource.Token);
             }
 
@@ -74,34 +72,19 @@ namespace net.willshouse.dcs.dcsbios
 
         private void listen(CancellationToken token)
         {
-             waitForReceive = false;
-           
-          
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    if (!waitForReceive)
-                    {
-                        socketAsyncEventArgs = new SocketAsyncEventArgs();
-                        socketAsyncEventArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Any, port); 
-                        socketAsyncEventArgs.SetBuffer(new byte[256], 0, 256);
-                        socketAsyncEventArgs.Completed += SocketAsyncEventArgs_Completed;
-                        waitForReceive = listener.ReceiveFromAsync(socketAsyncEventArgs);
-                        if (!waitForReceive)
-                        {
-                            SocketAsyncEventArgs_Completed(this, socketAsyncEventArgs);
-                        }
-                        else waitForReceive = true;
-                        //EndPoint senderRemote = (EndPoint)groupEP;
-
-                    }
                     
-                    
-                    
-                    //int byteCount = listener.ReceiveFrom(message, ref senderRemote);
-                    
-                    
+                    EndPoint senderRemote = (EndPoint)groupEP;
+                    byte[] message = new byte[256];
+                    int byteCount = listener.ReceiveFrom(message, ref senderRemote);
+                    MessageReceivedEventArgs args = new MessageReceivedEventArgs();
+                    args.Message = message;
+                    args.ByteCount = byteCount;
+                    args.Sender = senderRemote;
+                    OnMessageReceived(args);
                     
                 }
                 catch (SocketException e)
@@ -110,23 +93,9 @@ namespace net.willshouse.dcs.dcsbios
                     isListening = false;
                     
                 }
-
-
             }
 
         }
-
-        private void SocketAsyncEventArgs_Completed(object sender, SocketAsyncEventArgs e)
-        {
-            MessageReceivedEventArgs args = new MessageReceivedEventArgs();
-            args.Message = socketAsyncEventArgs.Buffer;
-            args.ByteCount = socketAsyncEventArgs.BytesTransferred;
-            args.Sender = socketAsyncEventArgs.RemoteEndPoint;
-            OnMessageReceived(args);
-            waitForReceive = false;
-        }
-
-        
     }
 
 
