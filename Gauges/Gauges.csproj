@@ -86,12 +86,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GaugesLib\GaugesLib.csproj">
-      <Project>{338C53DB-0B17-4DC6-A29F-89A24858DFA4}</Project>
-      <Name>GaugesLib</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\DCSBiosCommon\DCSBiosCommon.projitems" Label="Shared" />
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">
