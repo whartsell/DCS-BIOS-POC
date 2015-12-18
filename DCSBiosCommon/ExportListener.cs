@@ -24,6 +24,8 @@ namespace net.willshouse.dcs.dcsbios
         private IPEndPoint groupEP;
         private bool isListening;
         private CancellationTokenSource tokenSource;
+        private SocketAsyncEventArgs socketAsyncEventArgs;
+        private bool receivePending;
 
 
         
@@ -39,6 +41,7 @@ namespace net.willshouse.dcs.dcsbios
             address = IPAddress.Parse(aAddress);
             groupEP = new IPEndPoint(IPAddress.Any, port);
             tokenSource = new CancellationTokenSource();
+
            
         }
 
@@ -72,20 +75,28 @@ namespace net.willshouse.dcs.dcsbios
 
         private void listen(CancellationToken token)
         {
+            receivePending = false;
+            EndPoint senderRemote = (EndPoint)groupEP;
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    
-                    EndPoint senderRemote = (EndPoint)groupEP;
-                    byte[] message = new byte[256];
-                    int byteCount = listener.ReceiveFrom(message, ref senderRemote);
-                    MessageReceivedEventArgs args = new MessageReceivedEventArgs();
-                    args.Message = message;
-                    args.ByteCount = byteCount;
-                    args.Sender = senderRemote;
-                    OnMessageReceived(args);
-                    
+                    if (!receivePending)
+                    {
+                        socketAsyncEventArgs = new SocketAsyncEventArgs();
+                        socketAsyncEventArgs.SetBuffer(new byte[256],0,256);
+                        socketAsyncEventArgs.RemoteEndPoint = senderRemote;
+                        socketAsyncEventArgs.Completed += SocketAsyncEventArgs_Completed;
+                        //byte[] message = new byte[256];
+                        //int byteCount = listener.ReceiveFrom(message, ref senderRemote);
+                        receivePending = listener.ReceiveFromAsync(socketAsyncEventArgs);
+                        if (!receivePending)
+                        {
+                            SocketAsyncEventArgs_Completed(this, socketAsyncEventArgs);
+                        }
+
+                        
+                    }
                 }
                 catch (SocketException e)
                 {
@@ -95,6 +106,17 @@ namespace net.willshouse.dcs.dcsbios
                 }
             }
 
+        }
+
+        private void SocketAsyncEventArgs_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            MessageReceivedEventArgs args = new MessageReceivedEventArgs();
+            args.Message = e.Buffer;
+            args.ByteCount = e.BytesTransferred;
+            args.Sender = e.RemoteEndPoint;
+            OnMessageReceived(args);
+            receivePending = false;
+            //throw new NotImplementedException();
         }
     }
 
