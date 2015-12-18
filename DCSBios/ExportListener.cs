@@ -49,7 +49,7 @@ namespace net.willshouse.dcs.dcsbios
                 
                
                 listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                listener.Bind(new IPEndPoint(address, port));
+                listener.Bind(new IPEndPoint(IPAddress.Any, port));
                 Task.Run(() =>listen(tokenSource.Token), tokenSource.Token);
             }
 
