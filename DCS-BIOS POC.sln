@@ -11,8 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSXGauges", "OSXGauges\OSXG
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DCSBiosCommon", "DCSBiosCommon\DCSBiosCommon.shproj", "{7BE72579-E57D-40E9-91C0-8F05A7B9F377}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gauges-WUP", "Gauges-WUP\Gauges-WUP.csproj", "{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		DCSBiosCommon\DCSBiosCommon.projitems*{ed1f10dc-b72f-4b21-aa2b-9c759e2b8446}*SharedItemsImports = 4
 		DCSBiosCommon\DCSBiosCommon.projitems*{548773c5-399e-4ee0-b3ef-bcb1e46c1fe4}*SharedItemsImports = 4
 		DCSBiosCommon\DCSBiosCommon.projitems*{7be72579-e57d-40e9-91c0-8f05a7b9f377}*SharedItemsImports = 13
 	EndGlobalSection
@@ -67,6 +70,26 @@ Global
 		{D27D54D8-60A2-482D-9969-75A3328B452A}.Release|x64.ActiveCfg = Release|Any CPU
 		{D27D54D8-60A2-482D-9969-75A3328B452A}.Release|x86.ActiveCfg = Release|Any CPU
 		{D27D54D8-60A2-482D-9969-75A3328B452A}.Release|x86.Build.0 = Release|Any CPU
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|ARM.ActiveCfg = Debug|ARM
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|ARM.Build.0 = Debug|ARM
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|ARM.Deploy.0 = Debug|ARM
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|x64.ActiveCfg = Debug|x64
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|x64.Build.0 = Debug|x64
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|x64.Deploy.0 = Debug|x64
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|x86.ActiveCfg = Debug|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|x86.Build.0 = Debug|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Debug|x86.Deploy.0 = Debug|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|Any CPU.ActiveCfg = Release|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|ARM.ActiveCfg = Release|ARM
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|ARM.Build.0 = Release|ARM
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|ARM.Deploy.0 = Release|ARM
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|x64.ActiveCfg = Release|x64
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|x64.Build.0 = Release|x64
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|x64.Deploy.0 = Release|x64
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|x86.ActiveCfg = Release|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|x86.Build.0 = Release|x86
+		{ED1F10DC-B72F-4B21-AA2B-9C759E2B8446}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
