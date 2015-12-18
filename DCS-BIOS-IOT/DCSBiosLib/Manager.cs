@@ -3,17 +3,25 @@
     public class Manager
     {
         private MemoryMap map;
-        private ExportListener listener;
+        //private ExportListener listener;
         private ProtocolParser parser;
-        int Port { get; }
-        string Address { get;}
-
-        public Manager(string address,int port)
+        public int Port { get; }
+        public string Address { get;}
+        public ProtocolParser Parser
         {
-            listener = new ExportListener(port, address);
+            get {
+                return parser;
+            }
+        }
+
+        public Manager( )
+        {
+            //listener = new ExportListener(port, address);
+            Port = 5010;
+            Address = "239.255.50.10";
             map = new MemoryMap();
             parser = new ProtocolParser();
-            listener.MessageReceived += parser.MessageReceivedHandler;
+            //listener.MessageReceived += parser.MessageReceivedHandler;
             parser.DcsBiosWrite += map.DcsBiosWriteHandler;
             parser.DcsBiosWrite += map.FrameSyncHandler;
             
@@ -21,12 +29,12 @@
 
         public void Start()
         {
-            listener.Start();
+            //listener.Start();
         }
 
         public void Stop()
         {
-            listener.Stop();
+            //listener.Stop();
         }
 
         public ushort getDataAtAddress(ushort address) 
