@@ -60,8 +60,12 @@ namespace net.willshouse.dcs.dcsbios
 
         public void Stop()
         {
-            tokenSource.Cancel();
-            listener.Dispose();
+            if (isListening)
+            {
+                tokenSource.Cancel();
+                listener.Dispose();
+                isListening = false;
+            }
 
         }
 
@@ -75,6 +79,7 @@ namespace net.willshouse.dcs.dcsbios
 
         private void listen(CancellationToken token)
         {
+            isListening = true;
             receivePending = false;
             EndPoint senderRemote = (EndPoint)groupEP;
             while (!token.IsCancellationRequested)
